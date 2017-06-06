@@ -1,7 +1,7 @@
 {
   "name": "webpack",
   "version": "1.0.0",
-  "description": "A Vue.js project",
+  "description": "A tiny weather app build with Vue.js",
   "author": "Prashant Palikhe <prashpal09@gmail.com>",
   "private": true,
   "scripts": {

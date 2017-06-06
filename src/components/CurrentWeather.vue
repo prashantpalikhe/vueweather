@@ -30,22 +30,22 @@
   };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   .current-weather {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+
+    &__temperature {
+      font-size: 200px;
+    }
   }
 
   @media (min-width: 720px) {
     .current-weather {
       flex-direction: row;
     }
-  }
-
-  .current-weather__temperature {
-    font-size: 200px;
   }
 </style>

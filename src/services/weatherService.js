@@ -6,10 +6,16 @@ import DailyWeather from '@/models/DailyWeather';
 const http = require('axios');
 const jsonp = require('jsonp');
 
+const APIS = {
+  GEOCODE: 'https://maps.googleapis.com/maps/api/geocode/json?address=',
+  FORECAST: 'https://api.forecast.io/forecast/4891dee8e0ca9cf8fdb7ad6dd07fef9f/',
+  LOCATOR: 'http://ip-api.com/json',
+};
+
 export default {
   getLocationForAddress(address) {
     return http
-      .get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}`)
+      .get(`${APIS.GEOCODE}${address}`)
       .then((response) => {
         const result = response.data.results[0];
 
@@ -22,7 +28,7 @@ export default {
 
   getWeather(location, unit) {
     return new Promise((resolve, reject) => {
-      const url = `https://api.forecast.io/forecast/4891dee8e0ca9cf8fdb7ad6dd07fef9f/${location.latitude},${location.longitude}?units=${unit.value}&exclude=minutely,hourly,alerts,flag`;
+      const url = `${APIS.FORECAST}${location.latitude},${location.longitude}?units=${unit.value}&exclude=minutely,hourly,alerts,flag`;
       jsonp(url, (err, result) => {
         if (err) {
           return reject(err);
@@ -58,5 +64,13 @@ export default {
         return resolve(weather);
       });
     });
+  },
+
+  getCurrentLocation() {
+    return http.get(APIS.LOCATOR)
+      .then((response) => {
+        const result = response.data;
+        return new Location(result.lat, result.lon, `${result.city}, ${result.country}`);
+      });
   },
 };

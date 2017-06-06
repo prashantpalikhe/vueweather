@@ -80,6 +80,11 @@
 
     created() {
       this.unit = this.units[0];
+
+      weatherService.getCurrentLocation().then((location) => {
+        this.location = location;
+        this.getWeather();
+      });
     },
   };
 </script>

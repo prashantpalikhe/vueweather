@@ -18,7 +18,7 @@
 
 <style scoped>
   form {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
 
   input {

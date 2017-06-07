@@ -28,28 +28,27 @@
   };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
   .daily-weather {
     text-align: center;
     padding: 10px;
     flex: 1;
     background-color: rgba(0, 0, 0, 0.2);
-  }
 
-  .daily-weather:nth-child(even) {
-    background-color: rgba(0, 0, 0, 0.22);
-  }
+    &:nth-child(even) {
+      background-color: rgba(0, 0, 0, 0.22);
+    }
 
-  .daily-weather *:not(:last-child) {
-    margin-bottom: 10px;
-  }
+    *:not(:last-child) {
+      margin-bottom: 10px;
+    }
 
-  .daily-weather:first-child {
-    border-radius: 5px 0 0 5px;
-  }
+    &:first-child {
+      border-radius: 5px 0 0 5px;
+    }
 
-  .daily-weather:last-child {
-    border-radius: 0 5px 5px 0;
+    &:last-child {
+      border-radius: 0 5px 5px 0;
+    }
   }
-
 </style>

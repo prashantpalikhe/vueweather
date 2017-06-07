@@ -32,7 +32,7 @@
   };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
   .unit-switcher {
     align-self: flex-end;
   }
@@ -43,10 +43,10 @@
     outline: none;
     margin-left: 5px;
     transition: all 0.1s ease;
-  }
 
-  button.selected {
-    font-weight: bold;
-    font-size: 18px;
+    &.selected {
+      font-weight: bold;
+      font-size: 18px;
+    }
   }
 </style>

@@ -18,14 +18,8 @@
     },
 
     methods: {
-      ...mapMutations([
-        MUTATIONS.SELECT_UNIT,
-      ]),
-
       selectUnit(unit) {
-        this[MUTATIONS.SELECT_UNIT](unit);
-
-        this.$emit('onUnitChanged');
+        this.$emit('onUnitChanged', unit);
       },
     },
   };

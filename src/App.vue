@@ -21,61 +21,40 @@
 
 <script>
   import Search from '@/components/Search';
-  import weatherService from '@/services/weatherService';
   import UnitSwitcher from '@/components/UnitSwitcher';
   import CurrentWeather from '@/components/CurrentWeather';
   import DailyWeather from '@/components/DailyWeather';
-  import { mapGetters } from 'vuex';
+  import { mapActions, mapState } from 'vuex';
 
   export default {
     name: 'app',
     components: { Search, UnitSwitcher, CurrentWeather, DailyWeather },
 
     computed: {
-      ...mapGetters([
-        'selectedUnit',
+      ...mapState([
+        'location',
+        'weather',
       ]),
     },
 
-    data() {
-      return {
-        location: null,
-        weather: null,
-      };
-    },
-
     methods: {
+      ...mapActions([
+        'selectUnit',
+        'getCurrentLocation',
+        'getLocationForAddress',
+      ]),
+
       onQueryEntered(query) {
-        weatherService
-          .getLocationForAddress(query)
-          .then((location) => {
-            this.location = location;
-            this.getWeather();
-          });
+        this.getLocationForAddress(query);
       },
 
-      onUnitChanged() {
-        this.getWeather();
-      },
-
-      getWeather() {
-        if (!this.location) {
-          return;
-        }
-
-        weatherService
-          .getWeather(this.location, this.selectedUnit)
-          .then((data) => {
-            this.weather = data;
-          });
+      onUnitChanged(unit) {
+        this.selectUnit(unit);
       },
     },
 
     created() {
-      weatherService.getCurrentLocation().then((location) => {
-        this.location = location;
-        this.getWeather();
-      });
+      this.getCurrentLocation();
     },
   };
 </script>

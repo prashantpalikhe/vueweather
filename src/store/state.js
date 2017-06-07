@@ -11,4 +11,6 @@ export default {
       selected: false,
     },
   ],
+  location: null,
+  weather: null,
 };

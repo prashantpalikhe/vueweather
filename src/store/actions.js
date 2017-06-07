@@ -21,15 +21,15 @@ export default {
   },
 
   getLocationForAddress({ dispatch, commit }, address) {
-    commit(MUTATIONS.GET_CURRENT_LOCATION_REQUEST);
+    commit(MUTATIONS.GET_LOCATION_FOR_ADDRESS_REQUEST);
 
     return weatherService
       .getLocationForAddress(address)
       .then((location) => {
-        commit(MUTATIONS.GET_CURRENT_LOCATION_SUCCESS, location);
+        commit(MUTATIONS.GET_LOCATION_FOR_ADDRESS_SUCCESS, location);
         dispatch('getWeather');
       })
-      .catch(() => commit(MUTATIONS.GET_CURRENT_LOCATION_FAILURE));
+      .catch(() => commit(MUTATIONS.GET_LOCATION_FOR_ADDRESS_FAILURE));
   },
 
   getWeather({ getters, commit, state }) {

@@ -5,7 +5,7 @@
 
       <div v-if="weather">
         <div class="app-meta">
-          <p>{{ location.name }}</p>
+          <p v-if="location">{{ location.name }}</p>
           <unit-switcher @onUnitChanged="onUnitChanged"></unit-switcher>
         </div>
 

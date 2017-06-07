@@ -25,6 +25,18 @@ export default {
     state.location = null;
   },
 
+  [MUTATIONS.GET_LOCATION_FOR_ADDRESS_REQUEST](state) {
+    state.location = null;
+  },
+
+  [MUTATIONS.GET_LOCATION_FOR_ADDRESS_SUCCESS](state, location) {
+    state.location = location;
+  },
+
+  [MUTATIONS.GET_LOCATION_FOR_ADDRESS_FAILURE](state) {
+    state.location = null;
+  },
+
   [MUTATIONS.GET_WEATHER_REQUEST](state) {
     state.weather = null;
   },

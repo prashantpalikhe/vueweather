@@ -6,7 +6,7 @@
       <div v-if="weather">
         <div class="app-meta">
           <p>{{ location.name }}</p>
-          <unit-switcher :units="units" @onUnitChanged="onUnitChanged"></unit-switcher>
+          <unit-switcher @onUnitChanged="onUnitChanged"></unit-switcher>
         </div>
 
         <current-weather :data="weather.current"></current-weather>
@@ -25,28 +25,22 @@
   import UnitSwitcher from '@/components/UnitSwitcher';
   import CurrentWeather from '@/components/CurrentWeather';
   import DailyWeather from '@/components/DailyWeather';
+  import { mapGetters } from 'vuex';
 
   export default {
     name: 'app',
     components: { Search, UnitSwitcher, CurrentWeather, DailyWeather },
 
+    computed: {
+      ...mapGetters([
+        'selectedUnit',
+      ]),
+    },
+
     data() {
       return {
         location: null,
         weather: null,
-        unit: null,
-        units: [
-          {
-            display: 'C',
-            value: 'uk',
-            selected: true,
-          },
-          {
-            display: 'F',
-            value: 'us',
-            selected: false,
-          },
-        ],
       };
     },
 
@@ -60,8 +54,7 @@
           });
       },
 
-      onUnitChanged(unit) {
-        this.unit = unit;
+      onUnitChanged() {
         this.getWeather();
       },
 
@@ -71,7 +64,7 @@
         }
 
         weatherService
-          .getWeather(this.location, this.unit)
+          .getWeather(this.location, this.selectedUnit)
           .then((data) => {
             this.weather = data;
           });
@@ -79,8 +72,6 @@
     },
 
     created() {
-      this.unit = this.units[0];
-
       weatherService.getCurrentLocation().then((location) => {
         this.location = location;
         this.getWeather();

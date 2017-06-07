@@ -7,26 +7,25 @@
 </template>
 
 <script>
+  import { mapState, mapMutations } from 'vuex';
+  import * as MUTATIONS from '../store/mutation-types';
+
   export default {
-    props: {
-      units: {
-        type: Array,
-        default() {
-          return [];
-        },
-        required: true,
-      },
+    computed: {
+      ...mapState([
+        'units',
+      ]),
     },
 
     methods: {
+      ...mapMutations([
+        MUTATIONS.SELECT_UNIT,
+      ]),
+
       selectUnit(unit) {
-        this.units.forEach((_unit) => {
-          _unit.selected = false;
-        });
+        this[MUTATIONS.SELECT_UNIT](unit);
 
-        unit.selected = true;
-
-        this.$emit('onUnitChanged', unit);
+        this.$emit('onUnitChanged');
       },
     },
   };

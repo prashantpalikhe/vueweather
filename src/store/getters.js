@@ -1,3 +1,5 @@
-/**
- * Created by prashantpalikhe on 07/06/2017.
- */
+export default {
+  selectedUnit(state) {
+    return state.units.find(unit => unit.selected === true);
+  },
+};

@@ -2,9 +2,7 @@ import Location from '@/models/Location';
 import Weather from '@/models/Weather';
 import CurrentWeather from '@/models/CurrentWeather';
 import DailyWeather from '@/models/DailyWeather';
-
-const http = require('axios');
-const jsonp = require('jsonp');
+import Vue from 'vue';
 
 const APIS = {
   GEOCODE: 'https://maps.googleapis.com/maps/api/geocode/json?address=',
@@ -14,10 +12,11 @@ const APIS = {
 
 export default {
   getLocationForAddress(address) {
-    return http
+    return Vue.http
       .get(`${APIS.GEOCODE}${address}`)
+      .then(response => response.json())
       .then((response) => {
-        const result = response.data.results[0];
+        const result = response.results[0];
 
         const name = result.formatted_address;
         const { lat, lng } = result.geometry.location;
@@ -27,13 +26,12 @@ export default {
   },
 
   getWeather(location, unit) {
-    return new Promise((resolve, reject) => {
-      const url = `${APIS.FORECAST}${location.latitude},${location.longitude}?units=${unit.value}&exclude=minutely,hourly,alerts,flag`;
-      jsonp(url, (err, result) => {
-        if (err) {
-          return reject(err);
-        }
+    const url = `${APIS.FORECAST}${location.latitude},${location.longitude}?units=${unit.value}&exclude=minutely,hourly,alerts,flag`;
 
+    return Vue.http
+      .jsonp(url)
+      .then(response => response.json())
+      .then((result) => {
         const today = result.daily.data.shift();
         const currentWeather = new CurrentWeather(
           result.currently.temperature,
@@ -59,17 +57,14 @@ export default {
           );
         });
 
-        const weather = new Weather(location, currentWeather, forecast);
-
-        return resolve(weather);
+        return new Weather(location, currentWeather, forecast);
       });
-    });
   },
 
   getCurrentLocation() {
-    return http.get(APIS.LOCATOR)
-      .then((response) => {
-        const result = response.data;
+    return Vue.http.get(APIS.LOCATOR)
+      .then(response => response.json())
+      .then((result) => {
         return new Location(result.lat, result.lon, `${result.city}, ${result.country}`);
       });
   },

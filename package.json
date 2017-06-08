@@ -14,10 +14,9 @@
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs"
   },
   "dependencies": {
-    "axios": "^0.16.2",
-    "jsonp": "^0.2.1",
     "skycons": "^1.0.0",
     "vue": "^2.3.3",
+    "vue-resource": "^1.3.4",
     "vue-router": "^2.3.1",
     "vuex": "^2.3.1"
   },

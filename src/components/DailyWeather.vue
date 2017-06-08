@@ -44,11 +44,19 @@
     }
 
     &:first-child {
-      border-radius: 5px 0 0 5px;
+      border-radius: 5px 5px 0 0;
+
+      @media (min-width: 720px) {
+        border-radius: 5px 0 0 5px;
+      }
     }
 
     &:last-child {
-      border-radius: 0 5px 5px 0;
+      border-radius: 0 0 5px 5px;
+
+      @media (min-width: 720px) {
+        border-radius: 0 5px 5px 0;
+      }
     }
   }
 </style>

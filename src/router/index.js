@@ -8,7 +8,7 @@ export default new Router({
   routes: [
     {
       path: '/:city',
-      name: 'Weather',
+      name: 'weather',
       component: Weather,
     },
   ],

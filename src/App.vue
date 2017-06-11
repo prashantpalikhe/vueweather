@@ -1,9 +1,9 @@
 <template>
   <div id="app" class="app" :class="weather ? weather.current.period : ''">
     <div class="app-container">
-      <search v-on:onQueryEntered="onQueryEntered"></search>
+      <search :city="$route.params.city" v-on:onQueryEntered="onQueryEntered"></search>
 
-      <div v-if="weather">
+      <div v-if="weather && location">
         <div class="app-meta">
           <p v-if="location">{{ location.name }}</p>
           <unit-switcher @onUnitChanged="onUnitChanged"></unit-switcher>
@@ -30,6 +30,14 @@
     name: 'app',
     components: { Search, UnitSwitcher, CurrentWeather, DailyWeather },
 
+    watch: {
+      $route(to) {
+        if (to.params.city) {
+          this.getLocationForAddress(to.params.city);
+        }
+      },
+    },
+
     computed: {
       ...mapState([
         'location',
@@ -45,6 +53,7 @@
       ]),
 
       onQueryEntered(query) {
+        this.$router.push({name: 'weather', params: {city: query}});
         this.getLocationForAddress(query);
       },
 
@@ -54,7 +63,12 @@
     },
 
     created() {
-      this.getCurrentLocation();
+      if (this.$route.params.city) {
+        this.getLocationForAddress(this.$route.params.city);
+
+      } else {
+        this.getCurrentLocation();
+      }
     },
   };
 </script>

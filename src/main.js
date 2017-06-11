@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueResource from 'vue-resource';
 import store from './store';
+import router from './router';
 import App from './App';
 
 Vue.use(VueResource);
@@ -13,4 +14,5 @@ new Vue({
   template: '<App/>',
   components: { App },
   store,
+  router,
 });

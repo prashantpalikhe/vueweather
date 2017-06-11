@@ -1,12 +1,19 @@
 <template>
   <form @submit.prevent="submitForm">
-    <input type="text" ref="city" placeholder="Which city are you in?" autofocus>
+    <input type="text" ref="city" placeholder="Which city are you in?" autofocus :value="city">
   </form>
 </template>
 
 <script>
   export default {
     name: 'search',
+
+    props: {
+      city: {
+        type: String,
+        default: '',
+      },
+    },
 
     methods: {
       submitForm() {

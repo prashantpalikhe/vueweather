@@ -5,23 +5,19 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex';
-
   export default {
     name: 'search',
 
-    computed: {
-      ...mapState([
-        'route',
-        'city',
-      ]),
+    props: {
+      city: {
+        type: String,
+        default: '',
+      },
     },
 
     methods: {
       submitForm() {
-        const city = this.$refs.city.value;
-
-        this.$emit('onCityEntered', city);
+        this.$emit('onQueryEntered', this.$refs.city.value);
       },
     },
   };

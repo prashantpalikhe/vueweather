@@ -1,34 +1,74 @@
 <template>
   <div id="app" class="app" :class="weather ? weather.current.period : ''">
     <div class="app-container">
-      <search v-on:onCityEntered="onCityEntered"></search>
+      <search :city="$route.params.city" v-on:onQueryEntered="onQueryEntered"></search>
 
-      <router-view></router-view>
+      <div v-if="weather && location">
+        <div class="app-meta">
+          <p v-if="location">{{ location.name }}</p>
+          <unit-switcher @onUnitChanged="onUnitChanged"></unit-switcher>
+        </div>
+
+        <current-weather :data="weather.current"></current-weather>
+
+        <div class="forecast">
+          <daily-weather :data="dailyWeather" v-for="dailyWeather in weather.forecast" :key="dailyWeather.time"></daily-weather>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
   import Search from '@/components/Search';
-  import { mapState } from 'vuex';
+  import UnitSwitcher from '@/components/UnitSwitcher';
+  import CurrentWeather from '@/components/CurrentWeather';
+  import DailyWeather from '@/components/DailyWeather';
+  import { mapActions, mapState } from 'vuex';
 
   export default {
     name: 'app',
-    components: { Search },
+    components: { Search, UnitSwitcher, CurrentWeather, DailyWeather },
+
+    watch: {
+      $route(to) {
+        if (to.params.city) {
+          this.getLocationForAddress(to.params.city);
+        }
+      },
+    },
 
     computed: {
       ...mapState([
+        'location',
         'weather',
       ]),
     },
 
     methods: {
-      onCityEntered(city) {
-        this.$router.push({
-          name: 'weather',
-          params: { city },
-        });
+      ...mapActions([
+        'selectUnit',
+        'getCurrentLocation',
+        'getLocationForAddress',
+      ]),
+
+      onQueryEntered(query) {
+        this.$router.push({name: 'weather', params: {city: query}});
+        this.getLocationForAddress(query);
       },
+
+      onUnitChanged(unit) {
+        this.selectUnit(unit);
+      },
+    },
+
+    created() {
+      if (this.$route.params.city) {
+        this.getLocationForAddress(this.$route.params.city);
+
+      } else {
+        this.getCurrentLocation();
+      }
     },
   };
 </script>
@@ -80,6 +120,24 @@
     .app-container {
       width: 80vw;
       padding: 50px 0;
+    }
+  }
+
+  .app-meta {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 20px 0;
+  }
+
+  .forecast {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  @media (min-width: 720px) {
+    .forecast {
+      flex-direction: row;
     }
   }
 

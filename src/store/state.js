@@ -12,5 +12,5 @@ export default {
     },
   ],
   location: null,
-  weather: null
+  weather: null,
 };
